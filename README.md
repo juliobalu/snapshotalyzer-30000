@@ -14,4 +14,4 @@ shotty uses the configuration file created by the AWS cli. e.g.
 
 ## Running
 
-pipenv run python "C:\Users\juolivei\Documents\Courses\Python\projects\snapshotalyzer-30000\shotty\shotty.py"
+pipenv run python pipenv run python "shotty\shotty.py"
