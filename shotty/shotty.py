@@ -1,4 +1,5 @@
 import boto3
+import botocore
 import click
 
 session = boto3.Session(profile_name='python')
@@ -131,7 +132,12 @@ def stop_instances(project):
     for i in instances:
         tags = { t['Key']: t['Value'] for t in i.tags or [] }
         print("Stopping {0}...".format(tags.get('Name', i.id)))
-        i.stop()
+        try:
+            i.stop()
+        except botocore.exceptions.ClientError as e:
+            print("Could not stop {0}.  ".format(tags.get('Name', i.id)) + str(e))
+            continue
+
     return
 
 @instances.command('start')
@@ -145,7 +151,12 @@ def stop_instances(project):
     for i in instances:
         tags = { t['Key']: t['Value'] for t in i.tags or [] }
         print("Starting {0}...".format(tags.get('Name', i.id)))
-        i.start()
+        try:
+            i.start()
+        except botocore.exceptions.ClientError as e:
+            print("Could not start {0}.  ".format(tags.get('Name', i.id)) + str(e))
+            continue
+
     return
 
 if __name__ == '__main__':
